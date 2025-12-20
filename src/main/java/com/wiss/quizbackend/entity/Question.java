@@ -1,6 +1,7 @@
 package com.wiss.quizbackend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Constraint;
 
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class Question {
     @Column(nullable = false, length = 32)
     private String difficulty;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by_user_id") // foreign key
+    private AppUser createdBy;
+
     // ✅ DEFAULT CONSTRUCTOR hinzufügen (für JPA/Hibernate):
     public Question(){}
 
@@ -42,12 +47,13 @@ public class Question {
      */
     public Question(String question, String correctAnswer,
                     List<String> incorrectAnswers, String category,
-                    String difficulty) {
+                    String difficulty, AppUser createdBy) {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswers = incorrectAnswers;
         this.category = category;
         this.difficulty = difficulty;
+        this.createdBy = createdBy;
     }
 
     /**
@@ -61,13 +67,14 @@ public class Question {
      */
     public Question(Long id, String question, String correctAnswer,
                     List<String> incorrectAnswers, String category,
-                    String difficulty) {
+                    String difficulty, AppUser createdBy) {
         this.id = id;
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswers = incorrectAnswers;
         this.category = category;
         this.difficulty = difficulty;
+        this.createdBy = createdBy;
     }
 
     public Long getId() {
@@ -116,5 +123,12 @@ public class Question {
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public AppUser getCreatedBy() {
+        return createdBy;
+    }
+    public void setCreatedBy(AppUser createdBy) {
+        this.createdBy = createdBy;
     }
 }
