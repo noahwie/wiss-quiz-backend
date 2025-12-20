@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 @Getter
 @Setter
 public class AppUser {
+    // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,23 +20,20 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long version;
 
-    @NotNull
-    @Size(max = 50)
-    @UniqueElements
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
 
-    @NotNull
-    @Size(max = 100)
-    @UniqueElements
+    @Column(nullable = false ,unique = true, length = 100)
     private String email;
 
-    @NotNull
+    @Column(nullable = false)
     private String password;
 
-    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    // Constructors
     public AppUser() {
 
     }
