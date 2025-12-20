@@ -96,6 +96,11 @@ public class QuestionFormDTO {
             message = "Schwierigkeitsgrad muss einer der folgenden sein: easy, medium, hard")
     private String difficulty;
 
+    @Schema(description = "Username of the creator", example = "John Doe")
+    private String creatorUsername;
+
+    @Schema(description = "ID of the creator", example = "42")
+    private Long creatorId;
     /**
      * Standard-Konstruktor für JSON-Deserialisierung.
      */
@@ -136,6 +141,18 @@ public class QuestionFormDTO {
         this.incorrectAnswers = incorrectAnswers;
         this.category = category;
         this.difficulty = difficulty;
+    }
+
+    public QuestionFormDTO(Long id, String question, String correctAnswer,
+                           List<String> incorrectAnswers, String category, String difficulty, String creatorUsername, Long creatorId) {
+        this.id = id;
+        this.question = question;
+        this.correctAnswer = correctAnswer;
+        this.incorrectAnswers = incorrectAnswers;
+        this.category = category;
+        this.difficulty = difficulty;
+        this.creatorUsername = creatorUsername;
+        this.creatorId = creatorId;
     }
 
     // Getter und Setter
@@ -243,6 +260,14 @@ public class QuestionFormDTO {
         this.difficulty = difficulty;
     }
 
+    public String getCreatorUsername() {return creatorUsername;}
+
+    public void setCreatorUsername(String creatorUsername) {this.creatorUsername = creatorUsername;}
+
+    public Long getCreatorId() {return creatorId;}
+
+    public void setCreatorId(Long creatorId) {this.creatorId = creatorId;}
+
     /**
      * Konvertiert das FormDTO zu einem QuestionDTO für die Frontend-Anzeige.
      * <p>
@@ -299,6 +324,8 @@ public class QuestionFormDTO {
                 ", incorrectAnswers=" + incorrectAnswers +
                 ", category='" + category + '\'' +
                 ", difficulty='" + difficulty + '\'' +
+                ", creatorUsername='" + creatorUsername + '\'' +
+                ", creatorId=" + creatorId +
                 '}';
     }
 }

@@ -30,6 +30,9 @@ public class Question {
     @Column(nullable = false, length = 32)
     private String difficulty;
 
+    @Version
+    private Long version;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by_user_id") // foreign key
     private AppUser createdBy;

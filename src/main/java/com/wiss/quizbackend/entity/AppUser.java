@@ -14,7 +14,7 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Version
     private long version;
 
     @Column(unique = true, nullable = false, length = 50)
