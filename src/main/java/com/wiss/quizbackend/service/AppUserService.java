@@ -47,6 +47,10 @@ public class AppUserService {
         return appUserRepository.findByUsername(username);
     }
 
+    public Optional<AppUser> findByEmail(String email) {
+        return appUserRepository.findByEmail(email);
+    }
+
     public Optional<AppUser> authenticateUser(String username, String rawPassword) {
         // User suchen
         Optional<AppUser> userOpt = appUserRepository.findByUsername(username);
