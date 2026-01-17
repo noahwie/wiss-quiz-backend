@@ -11,13 +11,13 @@ public class LoginRequestDTO {
     private String usernameOrEmail;
 
     @NotBlank(message = "Passwort ist erforderlich")
-    private String passwort;
+    private String password;
 
     public LoginRequestDTO() {}
 
-    public LoginRequestDTO(String usernameOrEmail, String passwort) {
+    public LoginRequestDTO(String usernameOrEmail, String password) {
         this.usernameOrEmail = usernameOrEmail;
-        this.passwort = passwort;
+        this.password = password;
     }
 
     @Override
