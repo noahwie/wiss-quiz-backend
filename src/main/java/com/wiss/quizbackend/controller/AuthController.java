@@ -88,7 +88,7 @@ public class AuthController {
 
             // 2. Passwort prüfen mit authenticateUser
             Optional<AppUser> authenticatedUser =
-                    appUserService.authenticateUser(user.getUsername(), user.getPassword());
+                    appUserService.authenticateUser(user.getUsername(), request.getPassword());
 
             if (authenticatedUser.isEmpty()) {
                 // passwort falsch
