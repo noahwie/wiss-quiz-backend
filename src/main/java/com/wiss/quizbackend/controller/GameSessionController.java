@@ -1,18 +1,24 @@
 package com.wiss.quizbackend.controller;
 
+import com.wiss.quizbackend.entity.AppUser;
 import com.wiss.quizbackend.entity.GameSession;
+import com.wiss.quizbackend.service.AppUserService;
 import com.wiss.quizbackend.service.GameSessionService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/game")
+@RequestMapping("api/game")
 public class GameSessionController {
 
     private final GameSessionService gameSessionService;
+    private final AppUserService appUserService;
 
-    public GameSessionController(GameSessionService gameSessionService) {
+    public GameSessionController(GameSessionService gameSessionService, AppUserService appUserService) {
         this.gameSessionService = gameSessionService;
+        this.appUserService = appUserService;
     }
 
     /**
@@ -21,10 +27,11 @@ public class GameSessionController {
      */
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.CREATED)
-    public GameSession startGame(@RequestParam Long userId,
-                                 @RequestParam String category,
-                                 @RequestParam(defaultValue = "10") int totalQuestions) {
-        return gameSessionService.startGame(userId, category, totalQuestions);
+    public GameSession startGame(@RequestBody GameSession gameSession, @AuthenticationPrincipal UserDetails userDetails) {
+        // Get the User from the request
+        AppUser user = appUserService.findByUsername(userDetails.getUsername()).orElseThrow();
+
+        return gameSessionService.startGame(user.getId(), gameSession.getCategory(), gameSession.getTotalQuestions());
     }
 
     /**
@@ -33,8 +40,9 @@ public class GameSessionController {
      */
     @PutMapping("/{sessionId}/finish")
     public GameSession finishGame(@PathVariable Long sessionId,
-                                  @RequestParam int correctAnswers) {
-        return gameSessionService.finishGame(sessionId, correctAnswers);
+                                  @RequestBody GameSession gameSession) {
+
+        return gameSessionService.finishGame(sessionId, gameSession.getCorrectAnswers());
     }
 
     /**
@@ -45,4 +53,5 @@ public class GameSessionController {
     public GameSession getGameById(@PathVariable Long sessionId) {
         return gameSessionService.getGameById(sessionId);
     }
+
 }

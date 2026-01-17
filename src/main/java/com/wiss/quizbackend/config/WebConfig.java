@@ -9,7 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/api/questions/**") // <- Alle /api/questions/* Endpoints
+        registry.addMapping("/api/**") // <- Alle /api/questions/* Endpoints
                 .allowedOrigins("http://localhost:5173") // <- Vite dev Server
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")

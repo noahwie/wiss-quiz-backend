@@ -1,7 +1,11 @@
 package com.wiss.quizbackend.controller;
 
 import com.wiss.quizbackend.dto.LeaderboardDTO;
+import com.wiss.quizbackend.entity.AppUser;
+import com.wiss.quizbackend.service.AppUserService;
 import com.wiss.quizbackend.service.LeaderboardService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,10 +16,13 @@ import java.util.Map;
 public class LeaderboardController {
 
     private final LeaderboardService leaderboardService;
+    private final AppUserService appUserService;
+
 
     // Constructor Injection
-    public LeaderboardController(LeaderboardService leaderboardService) {
+    public LeaderboardController(LeaderboardService leaderboardService,AppUserService appUserService) {
         this.leaderboardService = leaderboardService;
+        this.appUserService = appUserService;
     }
 
     /**
@@ -40,9 +47,12 @@ public class LeaderboardController {
      * GET /api/leaderboard/user/1/stats
      * Lädt Statistiken eines Users
      */
-    @GetMapping("/user/{userId}/stats")
-    public Map<String, Object> getUserStats(@PathVariable Long userId) {
-        return leaderboardService.getUserStats(userId);
+    @GetMapping("/user/stats")
+    public Map<String, Object> getUserStats(@AuthenticationPrincipal UserDetails userDetails) {
+
+        AppUser user = appUserService.findByUsername(userDetails.getUsername()).orElseThrow();
+
+        return leaderboardService.getUserStats(user.getId());
     }
 
     /**
@@ -53,4 +63,5 @@ public class LeaderboardController {
     public List<Map<String, Object>> getCategoryStats() {
         return leaderboardService.getCategoryStats();
     }
+
 }

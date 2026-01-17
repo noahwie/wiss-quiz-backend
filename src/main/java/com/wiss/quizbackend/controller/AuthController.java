@@ -36,7 +36,7 @@ public class AuthController {
                     request.getUsername(),
                     request.getEmail(),
                     request.getPassword(),
-                    Role.PLAYER
+                    request.getRole()
             );
 
             RegisterResponseDTO response = new RegisterResponseDTO(

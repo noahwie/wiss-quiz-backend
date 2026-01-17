@@ -1,5 +1,6 @@
 package com.wiss.quizbackend.dto;
 
+import com.wiss.quizbackend.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -20,6 +21,8 @@ public class RegisterRequestDTO {
     @NotBlank(message = "Passwort erforderlich")
     @Size (min = 6, message = "passwort muss mindestens 6 Zeichen haben")
     private String password;
+
+    private Role role;
 
     // Default constructor or JSON Deserialization
     public RegisterRequestDTO() {}
