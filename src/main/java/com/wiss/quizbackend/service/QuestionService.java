@@ -8,6 +8,7 @@ import com.wiss.quizbackend.exception.DifficultyNotFoundException;
 import com.wiss.quizbackend.exception.QuestionNotFoundException;
 import com.wiss.quizbackend.mapper.QuestionMapper;
 import com.wiss.quizbackend.repository.QuestionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -156,16 +157,21 @@ public class QuestionService {
         return QuestionMapper.toDTO(updatedEntity);
     }
 
-    public QuestionFormDTO updateQuestionFromForm(Long id, Question question){
-        // Prüfen ob Frage existiert
-        if(!repository.existsById(id)){
-            throw new QuestionNotFoundException(id);
-        }
-        question.setId(id);
+    @Transactional
+    public QuestionFormDTO updateQuestionFromForm(Long id, Question incoming) {
+        Question existing = repository.findById(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
 
-        Question updated = repository.save(question);
-        return QuestionMapper.toFormDTO(updated);
+        // Copy editable fields (adjust names to your entity)
+        existing.setQuestion(incoming.getQuestion());
+        existing.setCategory(incoming.getCategory());
+        existing.setDifficulty(incoming.getDifficulty());
+        existing.setCorrectAnswer(incoming.getCorrectAnswer());
+        existing.setIncorrectAnswers(incoming.getIncorrectAnswers());
+        // If you have more fields in Question (e.g. explanation, imageUrl), copy them too.
 
+        Question saved = repository.save(existing);
+        return QuestionMapper.toFormDTO(saved);
     }
 
     /**
