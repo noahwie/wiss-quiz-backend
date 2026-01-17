@@ -1,11 +1,13 @@
 package com.wiss.quizbackend.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name= "game_sessions")
+@Table(name = "game_sessions")
 public class GameSession {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,9 +30,13 @@ public class GameSession {
     @Column(nullable = false)
     private LocalDateTime playedAt;
 
+    // Default Constructor für JPA
     public GameSession() {}
 
-    public GameSession(Long userId, String category, Integer correctAnswers, Integer totalQuestions, Integer totalScore) {
+    // Constructor für neue Games
+    public GameSession(Long userId, String category,
+                       Integer correctAnswers, Integer totalQuestions,
+                       Integer totalScore) {
         this.userId = userId;
         this.category = category;
         this.correctAnswers = correctAnswers;
